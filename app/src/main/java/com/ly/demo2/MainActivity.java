@@ -2,23 +2,64 @@ package com.ly.demo2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.res.Configuration;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 import android.os.Bundle;
-
+import com.angcyo.tablayout.delegate2.ViewPager2Delegate;
+import com.ly.demo2.databinding.ActivityMainBinding;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        setupPlayer();
+        setupViewPager();
+    }
 
+    private void setupViewPager() {
+
+        binding.viewPager.setAdapter(new FragmentStateAdapter(this) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                Fragment fragment;
+                switch (position){
+                    case 0:
+                        fragment = new ChatRoomFragment();
+                        break;
+                    case 1:
+                        fragment = new RankFragment();
+                        break;
+                    case 2:
+                    default:
+                        fragment = new RaceScheduleFragment();
+                        break;
+                }
+                return fragment;
+            }
+
+            @Override
+            public int getItemCount() {
+                return 3;
+            }
+        });
+        //不要修改forceSmoothScroll参数的值
+        //因为一旦该为true，那么用户在点击第二个tab的时候会创建第三个fragment
+        //如果是false就不会
+        //就是这么神奇
+        //
+        ViewPager2Delegate.Companion.install(binding.viewPager,binding.tabLayout,false);
+    }
+
+    private void setupPlayer() {
         NiceVideoPlayer player = findViewById(R.id.textureView);
         player.setPlayerType(NiceVideoPlayer.TYPE_IJK);
         player.setUp("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp",null);

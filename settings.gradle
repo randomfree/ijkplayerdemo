@@ -19,3 +19,5 @@ dependencyResolutionManagement {
 rootProject.name = "demo2"
 include ':app'
 include ':nicevideoplayer'
+
+

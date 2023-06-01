@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--页面内边距-->
+    <dimen name="page_side_padding">12dp</dimen>
+    
+</resources>
