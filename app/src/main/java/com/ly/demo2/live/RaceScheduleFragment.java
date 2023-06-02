@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.ly.demo2.R;
 
+/**
+ * 首页赛程fragment
+ */
 public class RaceScheduleFragment extends Fragment {
 
     @Nullable

@@ -1,20 +1,21 @@
 package com.ly.demo2.main;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import com.ly.demo2.BaseFragment;
+import com.ly.demo2.databinding.FragmentMainMineBinding;
 
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment<FragmentMainMineBinding> {
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    protected void initOnCreateView() {
+
+    }
+
+    @Override
+    protected FragmentMainMineBinding provideViewBinding(LayoutInflater inflater, ViewGroup container) {
+        return FragmentMainMineBinding.inflate(inflater,container,false);
     }
 }
