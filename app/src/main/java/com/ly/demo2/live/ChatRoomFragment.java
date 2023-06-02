@@ -1,4 +1,4 @@
-package com.ly.demo2;
+package com.ly.demo2.live;
 
 import android.os.Bundle;
 import android.util.Log;

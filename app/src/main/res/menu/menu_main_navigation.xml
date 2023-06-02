@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/main_navigation_main"
+        android:icon="@drawable/navigation_main"
+        android:title="首页" />
+    <item
+        android:id="@+id/navigation_item_race"
+        android:icon="@drawable/navigation_race"
+        android:title="赛程" />
+    <item
+        android:id="@+id/navigation_item_mine"
+        android:icon="@mipmap/img_navigation_mine"
+        android:title="我的" />
+</menu>

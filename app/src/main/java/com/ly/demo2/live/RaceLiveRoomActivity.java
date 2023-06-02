@@ -1,23 +1,26 @@
-package com.ly.demo2;
+package com.ly.demo2.live;
+
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import android.os.Bundle;
+
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate;
-import com.ly.demo2.databinding.ActivityMainBinding;
+import com.ly.demo2.R;
+import com.ly.demo2.databinding.ActivityRaceLiveRoomBinding;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
 
-public class MainActivity extends AppCompatActivity {
+public class RaceLiveRoomActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private ActivityRaceLiveRoomBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityRaceLiveRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setupPlayer();

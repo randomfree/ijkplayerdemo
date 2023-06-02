@@ -4,81 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
-    <com.xiao.nicevideoplayer.NiceVideoPlayer
-        android:id="@+id/textureView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.angcyo.tablayout.DslTabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="@dimen/page_side_padding"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textureView"
-        app:tab_deselect_color="#121212"
-        app:tab_divider_solid_color="@android:color/transparent"
-        app:tab_divider_width="20dp"
-        app:tab_draw_divider="true"
-        app:tab_draw_indicator="true"
-        app:tab_enable_text_bold="true"
-        app:tab_indicator_height="5dp"
-        app:tab_indicator_radius="10dp"
-        app:tab_indicator_solid_color="#ff2d69"
-        app:tab_indicator_style="STYLE_BOTTOM"
-        app:tab_indicator_width="18dp"
-        app:tab_select_color="#121212">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="聊天室" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="排行榜" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="赛程" />
-
-    </com.angcyo.tablayout.DslTabLayout>
-
-    <Button
-        android:id="@+id/followBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginEnd="@dimen/page_side_padding"
-        android:gravity="center"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="6dp"
-        android:text="关注"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/tabLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tabLayout" />
+    <!-- 底部导航栏 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        android:elevation="8dp"
+        app:menu="@menu/menu_main_navigation"
+        android:fitsSystemWindows="true"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
-        />
+        android:layout_height="0dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
