@@ -10,7 +10,7 @@ public class MineFragment extends BaseFragment<FragmentMainMineBinding> {
 
 
     @Override
-    protected void initOnCreateView() {
+    protected void init() {
 
     }
 
