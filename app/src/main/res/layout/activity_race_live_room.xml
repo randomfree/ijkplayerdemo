@@ -15,19 +15,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/danmuView"
+        android:layout_width="0dp"
+        android:background="@color/white"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/textureView"
+        app:layout_constraintEnd_toEndOf="@id/textureView"
+        app:layout_constraintTop_toTopOf="@id/textureView"
+        app:layout_constraintBottom_toBottomOf="@id/textureView"
+        />
 
-    <!--    app:tab_deselect_color="#121212"-->
-    <!--    app:tab_divider_solid_color="@android:color/transparent"-->
-    <!--    app:tab_divider_width="20dp"-->
-    <!--    app:tab_draw_divider="true"-->
-    <!--    app:tab_draw_indicator="true"-->
-    <!--    app:tab_enable_text_bold="true"-->
-    <!--    app:tab_indicator_height="5dp"-->
-    <!--    app:tab_indicator_radius="10dp"-->
-    <!--    app:tab_indicator_solid_color="#ff2d69"-->
-    <!--    app:tab_indicator_style="STYLE_BOTTOM"-->
-    <!--    app:tab_indicator_width="18dp"-->
-    <!--    app:tab_select_color="#121212"-->
     <com.angcyo.tablayout.DslTabLayout
         android:id="@+id/tabLayout"
         style="@style/common_tab_layout"
