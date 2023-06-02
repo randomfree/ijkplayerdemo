@@ -58,7 +58,6 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
         //因为一旦该为true，那么用户在点击第二个tab的时候会创建第三个fragment
         //如果是false就不会
         //就是这么神奇
-        //
         ViewPager2Delegate.Companion.install(binding.viewPager,binding.tabLayout,false);
     }
 

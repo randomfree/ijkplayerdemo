@@ -18,9 +18,6 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = provideViewBinding(inflater,container);
-        if (binding == null){
-
-        }
         return binding.getRoot();
     }
     protected abstract void initOnCreateView();

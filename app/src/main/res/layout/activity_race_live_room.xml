@@ -15,25 +15,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <!--    app:tab_deselect_color="#121212"-->
+    <!--    app:tab_divider_solid_color="@android:color/transparent"-->
+    <!--    app:tab_divider_width="20dp"-->
+    <!--    app:tab_draw_divider="true"-->
+    <!--    app:tab_draw_indicator="true"-->
+    <!--    app:tab_enable_text_bold="true"-->
+    <!--    app:tab_indicator_height="5dp"-->
+    <!--    app:tab_indicator_radius="10dp"-->
+    <!--    app:tab_indicator_solid_color="#ff2d69"-->
+    <!--    app:tab_indicator_style="STYLE_BOTTOM"-->
+    <!--    app:tab_indicator_width="18dp"-->
+    <!--    app:tab_select_color="#121212"-->
     <com.angcyo.tablayout.DslTabLayout
         android:id="@+id/tabLayout"
+        style="@style/common_tab_layout"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="@dimen/page_side_padding"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textureView"
-        app:tab_deselect_color="#121212"
-        app:tab_divider_solid_color="@android:color/transparent"
-        app:tab_divider_width="20dp"
-        app:tab_draw_divider="true"
-        app:tab_draw_indicator="true"
-        app:tab_enable_text_bold="true"
-        app:tab_indicator_height="5dp"
-        app:tab_indicator_radius="10dp"
-        app:tab_indicator_solid_color="#ff2d69"
-        app:tab_indicator_style="STYLE_BOTTOM"
-        app:tab_indicator_width="18dp"
-        app:tab_select_color="#121212">
+        app:layout_constraintTop_toBottomOf="@id/textureView">
 
 
         <TextView
@@ -77,8 +79,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

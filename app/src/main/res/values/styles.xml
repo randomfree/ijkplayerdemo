@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="common_tab_layout">
+        <item name="tab_deselect_color">#121212</item>
+        <item name="tab_divider_solid_color">@android:color/transparent</item>
+        <item name="tab_divider_width">20dp</item>
+        <item name="tab_draw_divider">true</item>
+        <item name="tab_draw_indicator">true</item>
+        <item name="tab_enable_text_bold">true</item>
+        <item name="tab_indicator_height">5dp</item>
+        <item name="tab_indicator_radius">10dp</item>
+        <item name="tab_indicator_solid_color">#ff2d69</item>
+        <item name="tab_indicator_style">STYLE_BOTTOM</item>
+        <item name="tab_indicator_width">18dp</item>
+        <item name="tab_select_color">#121212</item>
+    </style>
+</resources>
