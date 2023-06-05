@@ -15,7 +15,7 @@ public class CommentEntity {
         this.origin = ORIGIN_LOCAL;
         this.sendTime = System.currentTimeMillis();
         this.content = content;
-        this.nikeName = "我：";
+        this.nikeName = "我";
         //测试乱写的
         this.uid = 1;
     }

@@ -25,6 +25,7 @@ import com.ly.demo2.BaseFragment;
 import com.ly.demo2.R;
 import com.ly.demo2.databinding.FragmentChatRoomBinding;
 import com.ly.demo2.databinding.LayoutChatRoomTextItemBinding;
+import com.ly.demo2.live.CommentFormatter;
 import com.ly.demo2.live.DanmuControllInter;
 import com.ly.demo2.live.OnActivityTouchInter;
 import com.ly.demo2.live.model.CommentEntity;
@@ -49,7 +50,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
 
     private void obseveDataChange() {
         ChatRoomManager.getInstance().addListener(this, entity -> {
-            adapter.add(entity);
+            adapter.add(CommentFormatter.formatForComment(entity));
             binding.recyclerView.scrollToPosition(adapter.getItems().size());
         });
     }
@@ -94,7 +95,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
             @Override
             protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i, @Nullable Object o) {
                 LayoutChatRoomTextItemBinding itemBinding = LayoutChatRoomTextItemBinding.bind(viewHolder.itemView);
-                itemBinding.commentTv.setText(((CommentEntity) o).getContent());
+                itemBinding.commentTv.setText(o.toString());
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));

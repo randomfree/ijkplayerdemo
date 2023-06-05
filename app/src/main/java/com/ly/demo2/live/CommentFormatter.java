@@ -2,7 +2,7 @@ package com.ly.demo2.live;
 
 import com.ly.demo2.live.model.CommentEntity;
 
-public class CommentUtils {
+public class CommentFormatter {
 
 
     /**
@@ -11,8 +11,8 @@ public class CommentUtils {
      * @param entity
      * @return
      */
-    public static String formatCommentContentForComment(CommentEntity entity) {
-        return entity.getContent();
+    public static String formatForComment(CommentEntity entity) {
+        return entity.getNikeName()+":"+entity.getContent();
     }
 
 
@@ -22,7 +22,7 @@ public class CommentUtils {
      * @param entity
      * @return
      */
-    public static String formatCommentContentForDanmu(CommentEntity entity) {
+    public static String formatForDanmu(CommentEntity entity) {
         return entity.getContent();
     }
 

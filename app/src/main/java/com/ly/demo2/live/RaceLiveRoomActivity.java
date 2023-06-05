@@ -1,10 +1,8 @@
 package com.ly.demo2.live;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,19 +14,9 @@ import com.ly.demo2.R;
 import com.ly.demo2.databinding.ActivityRaceLiveRoomBinding;
 import com.ly.demo2.live.chatroom.ChatRoomFragment;
 import com.ly.demo2.live.chatroom.ChatRoomManager;
-import com.ly.demo2.live.model.CommentEntity;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
-
-import master.flame.danmaku.controller.DrawHandler;
-import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDanmakus;
-import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
-import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * 赛事直播间
@@ -76,7 +64,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
     private void observeDataChange() {
         ChatRoomManager.getInstance().addListener(this, entity -> {
             Log.i(TAG, "接收的消息:" + entity);
-            danmuUiLogic.addDanmaku(CommentUtils.formatCommentContentForDanmu(entity));
+            danmuUiLogic.addDanmaku(CommentFormatter.formatForDanmu(entity));
         });
     }
 
