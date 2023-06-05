@@ -25,6 +25,7 @@
         </activity>
         <activity android:name="com.ly.demo2.live.RaceLiveRoomActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             />
     </application>
 

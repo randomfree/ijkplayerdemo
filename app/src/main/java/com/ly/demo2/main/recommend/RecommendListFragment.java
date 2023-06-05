@@ -29,7 +29,6 @@ public class RecommendListFragment extends BaseFragment<FragmentRecommendListBin
     protected void init() {
 
         this.binding.recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(),2, RecyclerView.VERTICAL,false));
-        
 
         BaseQuickAdapter adapter  = new BaseQuickAdapter() {
             @NonNull

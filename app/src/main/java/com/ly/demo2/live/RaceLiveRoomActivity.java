@@ -37,16 +37,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
     private static final String TAG = "RaceLiveRoomActivity";
     private ActivityRaceLiveRoomBinding binding;
 
-
-    /**
-     * 弹幕view
-     */
-    private DanmakuView danmakuView;
-
-    /**
-     * 弹幕上下文
-     */
-    private DanmakuContext danmakuContext;
+    private DanmuUiLogic danmuUiLogic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,70 +45,20 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
         binding = ActivityRaceLiveRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        danmakuView = new DanmakuView(this);
-        setupDanmu();
+        //初始化view
+        danmuUiLogic = new DanmuUiLogic();
+        danmuUiLogic.init(this, this);
         setupPlayer();
         setupViewPager();
-        binding.playerView.setDanmakuView(danmakuView);
-
-
+        binding.playerView.setDanmakuView(danmuUiLogic.getDanmakuView());
+        //监听数据变化
         observeDataChange();
-
     }
 
-    private void observeDataChange() {
-        ChatRoomManager.getInstance().addListener(this, entity -> {
-            Log.i(TAG, "接收的消息:" + entity);
-            addDanmaku(CommentUtils.formatCommentContentForDanmu(entity));
-        });
-    }
-
-
-    private BaseDanmakuParser parser = new BaseDanmakuParser() {
-        @Override
-        protected IDanmakus parse() {
-            return new Danmakus();
-        }
-    };
-
-    private void setupDanmu() {
-
-
-        danmakuView.enableDanmakuDrawingCache(true);
-
-        danmakuView.setCallback(new DrawHandler.Callback() {
-            @Override
-            public void prepared() {
-//                showDanmaku = true;
-                if (danmakuView != null) {
-                    danmakuView.start();
-                }
-//                generateSomeDanmaku();
-            }
-
-            @Override
-            public void updateTimer(DanmakuTimer timer) {
-//                    timer.add((long) (timer.lastInterval() * (2 - 1)));
-
-            }
-
-            @Override
-            public void danmakuShown(BaseDanmaku danmaku) {
-
-            }
-
-            @Override
-            public void drawingFinished() {
-
-            }
-        });
-        danmakuContext = DanmakuContext.create();
-        danmakuView.prepare(parser, danmakuContext);
-
-    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //主要帮助聊天室隐藏软键盘
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof OnActivityTouchInter) {
                 ((OnActivityTouchInter) fragment).onActivityTouch(ev);
@@ -126,29 +67,20 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
         return super.dispatchTouchEvent(ev);
     }
 
-    private void addDanmaku(String content) {
-        //todo:草率处理一下，正常应该给个buff
-        if (danmakuView == null || !danmakuView.isPrepared()) return;
-        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        danmaku.text = content;
-        danmaku.padding = 5;
-        danmaku.textSize = sp2px(20);
-        danmaku.textColor = Color.GREEN;
-        danmaku.setTime(danmakuView.getCurrentTime());
-
-        danmakuView.addDanmaku(danmaku);
+    @Override
+    public boolean changeShowState() {
+        if (isFinishing() || isDestroyed()) return false;
+        return danmuUiLogic.changeShowState();
     }
 
-    /**
-     * sp转px的方法。
-     */
-    public int sp2px(float spValue) {
-        final float fontScale = getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
+    private void observeDataChange() {
+        ChatRoomManager.getInstance().addListener(this, entity -> {
+            Log.i(TAG, "接收的消息:" + entity);
+            danmuUiLogic.addDanmaku(CommentUtils.formatCommentContentForDanmu(entity));
+        });
     }
 
     private void setupViewPager() {
-
         binding.viewPager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
@@ -184,7 +116,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
     private void setupPlayer() {
         binding.playerView.setPlayerType(NiceVideoPlayer.TYPE_IJK);
         binding.playerView.setUp("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp", null);
-
+        binding.playerView.start();
         TxVideoPlayerController controller = new TxVideoPlayerController(this);
         controller.setTitle("美超：美国队长vs钢铁侠");
         controller.setImage(R.mipmap.poster);
@@ -192,6 +124,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
         binding.playerView.setController(controller);
 
         NiceVideoPlayerManager.instance().setCurrentNiceVideoPlayer(binding.playerView);
+
     }
 
     @Override
@@ -200,26 +133,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
         // 所以在Activity中onBackPress要交给NiceVideoPlayer先处理。
         if (NiceVideoPlayerManager.instance().onBackPressd()) return;
         super.onBackPressed();
-        if (danmakuView != null) {
-            danmakuView.release();
-        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
-            danmakuView.resume();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (danmakuView != null && danmakuView.isPrepared()) {
-            danmakuView.pause();
-        }
+        danmuUiLogic.onBackPress();
     }
 
     @Override
@@ -229,24 +143,4 @@ public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuCont
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (danmakuView != null) {
-            danmakuView.release();
-        }
-    }
-
-
-    @Override
-    public boolean changeShowState() {
-        if (danmakuView == null) return false;
-        if (danmakuView.getVisibility() == View.VISIBLE) {
-            danmakuView.setVisibility(View.GONE);
-            return false;
-        } else {
-            danmakuView.setVisibility(View.VISIBLE);
-            return true;
-        }
-    }
 }

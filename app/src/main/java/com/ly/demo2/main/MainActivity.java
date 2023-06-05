@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Fragment firstFragment = getFragmentByMenu(R.id.main_navigation_main);
-        lastSelectFragment = firstFragment;
+        lastSelectFragment = getFragmentByMenu(R.id.main_navigation_main);
 
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
 
