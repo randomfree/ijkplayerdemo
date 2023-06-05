@@ -78,6 +78,8 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
 //                showDanmaku = true;
                 if (danmakuView != null) {
                     danmakuView.start();
+                    //TODO: 测试代码删除
+                    addDanmaku(false);
                 }
 //                generateSomeDanmaku();
             }

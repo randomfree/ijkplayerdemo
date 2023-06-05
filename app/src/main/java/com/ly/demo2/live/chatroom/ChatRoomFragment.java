@@ -36,16 +36,6 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
         binding.editMaskView.setOnClickListener(this);
         binding.newMessageTipView.setOnClickListener(this);
 
-//        binding.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if (checkKeyboardStatus()) {
-//                    binding.editMaskView.setClickable(true);
-//                }else{
-//                    binding.editMaskView.setClickable(false);
-//                }
-//            }
-//        });
     }
 
     /**
