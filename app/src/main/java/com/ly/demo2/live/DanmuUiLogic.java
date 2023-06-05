@@ -130,7 +130,6 @@ public class DanmuUiLogic {
     }
 
     public void addDanmaku(String content) {
-        //todo:草率处理一下，正常应该给个buff
         if (danmakuView == null || !danmakuView.isPrepared()||context == null) return;
         if (TextUtils.isEmpty(content))return;
         BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
