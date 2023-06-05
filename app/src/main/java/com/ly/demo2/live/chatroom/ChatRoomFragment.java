@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -21,13 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.DataBindingHolder;
 import com.chad.library.adapter.base.viewholder.QuickViewHolder;
 import com.ly.demo2.BaseFragment;
 import com.ly.demo2.R;
 import com.ly.demo2.databinding.FragmentChatRoomBinding;
 import com.ly.demo2.databinding.LayoutChatRoomTextItemBinding;
-import com.ly.demo2.live.CommentUtils;
+import com.ly.demo2.live.DanmuControllInter;
 import com.ly.demo2.live.OnActivityTouchInter;
 import com.ly.demo2.live.model.CommentEntity;
 
@@ -52,7 +50,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
     private void obseveDataChange() {
         ChatRoomManager.getInstance().addListener(this, entity -> {
             adapter.add(entity);
-            binding.recyclerView.smoothScrollToPosition(adapter.getItems().size());
+            binding.recyclerView.scrollToPosition(adapter.getItems().size());
         });
     }
 
@@ -61,21 +59,28 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
 
         initRecycleView();
 
-        binding.editMaskView.setOnClickListener(this);
         binding.newMessageTipView.setOnClickListener(this);
         binding.inputView.setOnEditorActionListener((v, actionId, event) -> {
             if (event.getAction() == KeyEvent.ACTION_UP) {
                 //点击了发送
-                String text = binding.inputView.getText().toString().replace(" ", "").replace("\n", "");
-                if (!TextUtils.isEmpty(text)) {
-                    ChatRoomManager.getInstance().sendMessage(new CommentEntity(text));
-                }
+
+                getContentAndSend();
             }
 
             return true;
         });
 
+        binding.sendCommentBtn.setOnClickListener(this);
+        binding.hideGiftAnimaBtn.setOnClickListener(this);
 
+
+    }
+
+    private void getContentAndSend() {
+        String text = binding.inputView.getText().toString().replace(" ", "").replace("\n", "");
+        if (!TextUtils.isEmpty(text)) {
+            ChatRoomManager.getInstance().sendMessage(new CommentEntity(text));
+        }
     }
 
     private void initRecycleView() {
@@ -92,8 +97,10 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
                 itemBinding.commentTv.setText(((CommentEntity) o).getContent());
             }
         };
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(adapter);
+
+
     }
 
     /**
@@ -117,10 +124,20 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.editMaskView) {
-            hideSoftKeyboard(this.getActivity());
-        } else if (v.getId() == R.id.newMessageTipView) {
+        if (v.getId() == R.id.newMessageTipView) {
             Toast.makeText(this.getContext(), "没问题", Toast.LENGTH_SHORT).show();
+        } else if (v.getId() == R.id.sendCommentBtn) {
+            getContentAndSend();
+        } else if (v.getId() == R.id.hideGiftAnimaBtn) {
+            Activity activity = getActivity();
+            if (activity instanceof DanmuControllInter) {
+                boolean isShow = ((DanmuControllInter) activity).changeShowState();
+                if (isShow) {
+                    binding.hideGiftAnimaBtn.setImageResource(R.mipmap.gift_setting);
+                } else {
+                    binding.hideGiftAnimaBtn.setImageResource(R.mipmap.gift_setting_hide);
+                }
+            }
         }
 
     }

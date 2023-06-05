@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ import master.flame.danmaku.ui.widget.DanmakuView;
 /**
  * 赛事直播间
  */
-public class RaceLiveRoomActivity extends AppCompatActivity {
+public class RaceLiveRoomActivity extends AppCompatActivity implements DanmuControllInter {
     private static final String TAG = "RaceLiveRoomActivity";
     private ActivityRaceLiveRoomBinding binding;
 
@@ -66,7 +67,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
 
     private void observeDataChange() {
         ChatRoomManager.getInstance().addListener(this, entity -> {
-            Log.i(TAG,"接收的消息:"+entity);
+            Log.i(TAG, "接收的消息:" + entity);
             addDanmaku(CommentUtils.formatCommentContentForDanmu(entity));
         });
     }
@@ -96,7 +97,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
 
             @Override
             public void updateTimer(DanmakuTimer timer) {
-                    timer.add((long) (timer.lastInterval() * (2 - 1)));
+//                    timer.add((long) (timer.lastInterval() * (2 - 1)));
 
             }
 
@@ -127,7 +128,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
 
     private void addDanmaku(String content) {
         //todo:草率处理一下，正常应该给个buff
-        if (danmakuView == null||!danmakuView.isPrepared()) return;
+        if (danmakuView == null || !danmakuView.isPrepared()) return;
         BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
         danmaku.text = content;
         danmaku.padding = 5;
@@ -237,4 +238,15 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean changeShowState() {
+        if (danmakuView == null) return false;
+        if (danmakuView.getVisibility() == View.VISIBLE) {
+            danmakuView.setVisibility(View.GONE);
+            return false;
+        } else {
+            danmakuView.setVisibility(View.VISIBLE);
+            return true;
+        }
+    }
 }

@@ -7,6 +7,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:layout_marginTop="24dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +28,7 @@
         android:paddingVertical="2dp"
         android:text="有新的消息"
         android:textColor="@color/colorPrimary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="@id/recyclerView" />
 
@@ -57,29 +59,22 @@
         android:imeOptions="actionSend"
         android:background="@drawable/shape_input_bg"
         android:maxLines="1"
+        android:paddingStart="16dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="@id/bgView"
-        app:layout_constraintEnd_toStartOf="@id/sendGiftBtn"
+        app:layout_constraintEnd_toStartOf="@id/sendCommentBtn"
         app:layout_constraintStart_toEndOf="@id/hideGiftAnimaBtn"
         app:layout_constraintTop_toTopOf="@id/bgView" />
 
-    <View
-        android:id="@+id/sendGiftBtn"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <Button
+        android:id="@+id/sendCommentBtn"
+        android:layout_width="80dp"
+        android:text="发送"
+        android:layout_height="45dp"
+        android:layout_marginEnd="@dimen/page_side_padding"
         app:layout_constraintBottom_toBottomOf="@id/bgView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/bgView" />
-
-    <View
-        android:id="@+id/editMaskView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:clickable="false"
-        app:layout_constraintBottom_toTopOf="@+id/inputView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
