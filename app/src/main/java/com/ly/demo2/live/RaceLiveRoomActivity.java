@@ -2,6 +2,7 @@ package com.ly.demo2.live;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import com.angcyo.tablayout.delegate2.ViewPager2Delegate;
 import com.ly.demo2.R;
 import com.ly.demo2.databinding.ActivityRaceLiveRoomBinding;
 import com.ly.demo2.live.chatroom.ChatRoomFragment;
+import com.ly.demo2.live.chatroom.ChatRoomManager;
+import com.ly.demo2.live.model.CommentEntity;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
@@ -57,6 +60,15 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
         binding.playerView.setDanmakuView(danmakuView);
 
 
+        observeDataChange();
+
+    }
+
+    private void observeDataChange() {
+        ChatRoomManager.getInstance().addListener(this, entity -> {
+            Log.i(TAG,"接收的消息:"+entity);
+            addDanmaku(CommentUtils.formatCommentContentForDanmu(entity));
+        });
     }
 
 
@@ -78,14 +90,13 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
 //                showDanmaku = true;
                 if (danmakuView != null) {
                     danmakuView.start();
-                    //TODO: 测试代码删除
-                    addDanmaku(false);
                 }
 //                generateSomeDanmaku();
             }
 
             @Override
             public void updateTimer(DanmakuTimer timer) {
+                    timer.add((long) (timer.lastInterval() * (2 - 1)));
 
             }
 
@@ -114,10 +125,11 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
-    private void addDanmaku(boolean islive) {
-        if (danmakuView == null) return;
+    private void addDanmaku(String content) {
+        //todo:草率处理一下，正常应该给个buff
+        if (danmakuView == null||!danmakuView.isPrepared()) return;
         BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        danmaku.text = "content";
+        danmaku.text = content;
         danmaku.padding = 5;
         danmaku.textSize = sp2px(20);
         danmaku.textColor = Color.GREEN;
