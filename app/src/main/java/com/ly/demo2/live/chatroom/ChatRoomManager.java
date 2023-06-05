@@ -1,5 +1,8 @@
 package com.ly.demo2.live.chatroom;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -38,10 +41,27 @@ public class ChatRoomManager {
     private static ChatRoomManager instance = new ChatRoomManager();
 
 
+    private static Handler handler = new Handler(Looper.getMainLooper());
+
     public static ChatRoomManager getInstance() {
         return instance;
     }
 
+    private ChatRoomManager() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+
+                    }
+                    onReceiveMessage(FakeDateHelper.generateCommenEntity());
+                }
+            }
+        }).start();
+    }
 
     public void addListener(LifecycleOwner lifecycle, OnReceiveMessageListener listener) {
         lifecycle.getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
@@ -63,9 +83,15 @@ public class ChatRoomManager {
      * @param entity
      */
     public synchronized void onReceiveMessage(CommentEntity entity) {
-        for (OnReceiveMessageListener listener : listeners) {
-            listener.onReceiveMessage(entity);
-        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                for (OnReceiveMessageListener listener : listeners) {
+                    listener.onReceiveMessage(entity);
+                }
+            }
+        });
+
     }
 
     /**
@@ -76,5 +102,6 @@ public class ChatRoomManager {
     public void sendMessage(CommentEntity entity) {
         onReceiveMessage(entity);
     }
+
 
 }

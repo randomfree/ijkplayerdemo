@@ -51,7 +51,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
     private void obseveDataChange() {
         ChatRoomManager.getInstance().addListener(this, entity -> {
             adapter.add(CommentFormatter.formatForComment(entity));
-            binding.recyclerView.scrollToPosition(adapter.getItems().size());
+            binding.recyclerView.smoothScrollToPosition(adapter.getItems().size()-1);
         });
     }
 
@@ -66,6 +66,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
                 //点击了发送
 
                 getContentAndSend();
+                hideSoftKeyboard(this.getActivity());
             }
 
             return true;
@@ -81,6 +82,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
         String text = binding.inputView.getText().toString().replace(" ", "").replace("\n", "");
         if (!TextUtils.isEmpty(text)) {
             ChatRoomManager.getInstance().sendMessage(new CommentEntity(text));
+            binding.inputView.setText("");
         }
     }
 
@@ -129,6 +131,7 @@ public class ChatRoomFragment extends BaseFragment<FragmentChatRoomBinding> impl
             Toast.makeText(this.getContext(), "没问题", Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.sendCommentBtn) {
             getContentAndSend();
+            hideSoftKeyboard(this.getActivity());
         } else if (v.getId() == R.id.hideGiftAnimaBtn) {
             Activity activity = getActivity();
             if (activity instanceof DanmuControllInter) {
