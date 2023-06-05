@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="@id/bgView"
         app:layout_constraintBottom_toBottomOf="@id/bgView"
         />
-    <View
+    <EditText
         android:id="@+id/inputView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,6 +67,17 @@
         app:layout_constraintBottom_toBottomOf="@id/bgView"
         />
 
+    <View
+        android:id="@+id/editMaskView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/inputView"
+        android:background="@android:color/transparent"
+        />
 
 
 

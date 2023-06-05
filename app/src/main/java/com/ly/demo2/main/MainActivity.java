@@ -1,24 +1,16 @@
 package com.ly.demo2.main;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 
-import com.google.android.material.navigation.NavigationBarView;
 import com.ly.demo2.R;
 import com.ly.demo2.databinding.ActivityMainBinding;
-import com.ly.demo2.live.ChatRoomFragment;
 import com.ly.demo2.live.RaceScheduleFragment;
-import com.ly.demo2.live.RankFragment;
 import com.ly.demo2.main.recommend.RecommendFragment;
-import com.ly.demo2.main.recommend.RecommendListFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";

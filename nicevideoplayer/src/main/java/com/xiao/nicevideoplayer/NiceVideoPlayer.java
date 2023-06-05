@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -140,6 +141,10 @@ public class NiceVideoPlayer extends FrameLayout
         mContainer.addView(mController, params);
     }
 
+
+    public void setDanmakuView(View view){
+        mContainer.addView(view ,-1,-1);
+    }
     /**
      * 设置播放器类型
      *

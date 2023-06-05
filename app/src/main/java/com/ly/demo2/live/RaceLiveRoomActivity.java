@@ -1,9 +1,8 @@
 package com.ly.demo2.live;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,59 +12,53 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate;
 import com.ly.demo2.R;
 import com.ly.demo2.databinding.ActivityRaceLiveRoomBinding;
+import com.ly.demo2.live.chatroom.ChatRoomFragment;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
-
-import java.util.HashMap;
 
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDanmakus;
-import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
+/**
+ * 赛事直播间
+ */
 public class RaceLiveRoomActivity extends AppCompatActivity {
     private static final String TAG = "RaceLiveRoomActivity";
     private ActivityRaceLiveRoomBinding binding;
+
+
+    /**
+     * 弹幕view
+     */
+    private DanmakuView danmakuView;
 
     /**
      * 弹幕上下文
      */
     private DanmakuContext danmakuContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityRaceLiveRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        danmakuView = new DanmakuView(this);
+        setupDanmu();
         setupPlayer();
         setupViewPager();
-        setupDanmu();
+        binding.playerView.setDanmakuView(danmakuView);
 
-
-
-        start();
-//        addDanmaku(true);
 
     }
-    Runnable run =new Runnable() {
-        @Override
-        public void run() {
-            start();
-            if (!binding.danmuView.isPrepared())return;
-            addDanmaku(false);
 
-        }
-    };
-    private void start(){
-
-        binding.danmuView.postDelayed(run,50);
-    }
 
     private BaseDanmakuParser parser = new BaseDanmakuParser() {
         @Override
@@ -73,14 +66,19 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
             return new Danmakus();
         }
     };
-    private void setupDanmu() {
-        binding.danmuView.enableDanmakuDrawingCache(true);
 
-        binding.danmuView.setCallback(new DrawHandler.Callback() {
+    private void setupDanmu() {
+
+
+        danmakuView.enableDanmakuDrawingCache(true);
+
+        danmakuView.setCallback(new DrawHandler.Callback() {
             @Override
             public void prepared() {
 //                showDanmaku = true;
-                binding.danmuView.start();
+                if (danmakuView != null) {
+                    danmakuView.start();
+                }
 //                generateSomeDanmaku();
             }
 
@@ -100,20 +98,32 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
             }
         });
         danmakuContext = DanmakuContext.create();
-        binding.danmuView.prepare(parser, danmakuContext);
+        danmakuView.prepare(parser, danmakuContext);
 
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof OnActivityTouchInter) {
+                ((OnActivityTouchInter) fragment).onActivityTouch(ev);
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     private void addDanmaku(boolean islive) {
+        if (danmakuView == null) return;
         BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
         danmaku.text = "content";
         danmaku.padding = 5;
         danmaku.textSize = sp2px(20);
         danmaku.textColor = Color.GREEN;
-        danmaku.setTime(binding.danmuView.getCurrentTime());
+        danmaku.setTime(danmakuView.getCurrentTime());
 
-        binding.danmuView.addDanmaku(danmaku);
+        danmakuView.addDanmaku(danmaku);
     }
+
     /**
      * sp转px的方法。
      */
@@ -121,6 +131,7 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
         final float fontScale = getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
+
     private void setupViewPager() {
 
         binding.viewPager.setAdapter(new FragmentStateAdapter(this) {
@@ -156,17 +167,16 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
     }
 
     private void setupPlayer() {
-        NiceVideoPlayer player = findViewById(R.id.textureView);
-        player.setPlayerType(NiceVideoPlayer.TYPE_IJK);
-        player.setUp("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp", null);
+        binding.playerView.setPlayerType(NiceVideoPlayer.TYPE_IJK);
+        binding.playerView.setUp("rtmp://mobliestream.c3tv.com:554/live/goodtv.sdp", null);
 
         TxVideoPlayerController controller = new TxVideoPlayerController(this);
         controller.setTitle("美超：美国队长vs钢铁侠");
         controller.setImage(R.mipmap.poster);
 
-        player.setController(controller);
+        binding.playerView.setController(controller);
 
-        NiceVideoPlayerManager.instance().setCurrentNiceVideoPlayer(player);
+        NiceVideoPlayerManager.instance().setCurrentNiceVideoPlayer(binding.playerView);
     }
 
     @Override
@@ -175,25 +185,25 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
         // 所以在Activity中onBackPress要交给NiceVideoPlayer先处理。
         if (NiceVideoPlayerManager.instance().onBackPressd()) return;
         super.onBackPressed();
-
-        binding.danmuView.release();
+        if (danmakuView != null) {
+            danmakuView.release();
+        }
     }
-
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (binding.danmuView.isPrepared()&&binding.danmuView.isPaused()){
-            binding.danmuView.resume();
+        if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
+            danmakuView.resume();
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (binding.danmuView.isPrepared()) {
-            binding.danmuView.pause();
+        if (danmakuView != null && danmakuView.isPrepared()) {
+            danmakuView.pause();
         }
     }
 
@@ -204,11 +214,12 @@ public class RaceLiveRoomActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        binding.danmuView.release();
+        if (danmakuView != null) {
+            danmakuView.release();
+        }
     }
 
 

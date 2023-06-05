@@ -7,7 +7,7 @@
     tools:context=".main.MainActivity">
 
     <com.xiao.nicevideoplayer.NiceVideoPlayer
-        android:id="@+id/textureView"
+        android:id="@+id/playerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="16:9"
@@ -15,16 +15,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <master.flame.danmaku.ui.widget.DanmakuView
-        android:id="@+id/danmuView"
+    <FrameLayout
+        android:id="@+id/danmuContainer"
         android:layout_width="0dp"
-        android:background="@color/white"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@id/textureView"
-        app:layout_constraintEnd_toEndOf="@id/textureView"
-        app:layout_constraintTop_toTopOf="@id/textureView"
-        app:layout_constraintBottom_toBottomOf="@id/textureView"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/playerView"
+        app:layout_constraintEnd_toEndOf="@id/playerView"
+        app:layout_constraintStart_toStartOf="@id/playerView"
+        app:layout_constraintTop_toTopOf="@id/playerView" />
+
+    <!--    <master.flame.danmaku.ui.widget.DanmakuView-->
+    <!--        android:id="@+id/danmuView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:background="@color/white"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@id/playerView"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/playerView"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/playerView"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/playerView" />-->
 
     <com.angcyo.tablayout.DslTabLayout
         android:id="@+id/tabLayout"
@@ -33,7 +41,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="@dimen/page_side_padding"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textureView">
+        app:layout_constraintTop_toBottomOf="@id/playerView">
 
 
         <TextView
